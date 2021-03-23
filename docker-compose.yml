@@ -1,0 +1,92 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: lifebank73_mysql
+    networks:
+      - "network"
+    ports:
+      - "8306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: adminpwd
+      MYSQL_USER: lportal
+      MYSQL_PASSWORD: lportal
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+  mail:
+    image: rnwood/smtp4dev:v3
+    container_name: lifebank73_mail
+    networks:
+      - "network"
+    ports:
+      - "5000:80"
+    volumes:
+      - smtp_data:/smtp4dev
+  openbanking:
+    build:
+      dockerfile: jetty/Dockerfile
+      context: .
+      args:
+        - BASE_IMAGE=jetty:9-jdk8
+    container_name: lifebank73_obp
+    depends_on:
+      - "mysql"
+    entrypoint: /usr/local/bin/wait-for -t 60 mysql:3306 -- /docker-entrypoint.sh
+    networks:
+      - "network"
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./jetty/webapps:/var/lib/jetty/webapps
+  liferay:
+    build:
+      dockerfile: liferay/Dockerfile
+      context: .
+      args:
+        - BASE_IMAGE=liferay/dxp:7.3.10-ga1
+    container_name: lifebank73_liferay
+    depends_on:
+      - "mysql"
+      - "mail"
+      - "openbanking"
+    entrypoint: /usr/local/bin/wait-for -t 60 mysql:3306 -- /usr/local/bin/liferay_entrypoint.sh
+    environment:
+      LIFERAY_JVM_OPTS: "-Xms2560m -Xmx4096m"
+      LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED: "false"
+      LIFERAY_TERMS_PERIOD_OF_PERIOD_USE_PERIOD_REQUIRED: "false"
+      LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_ENABLED: "false"
+      LIFERAY_USERS_PERIOD_REMINDER_PERIOD_QUERIES_PERIOD_CUSTOM_PERIOD_QUESTION_PERIOD_ENABLED: "false"     
+      LIFERAY_SESSION_PERIOD_TIMEOUT_PERIOD_AUTO_PERIOD_EXTEND: "true" 
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_LASS_UPPERCASEN_AME: "com.mysql.cj.jdbc.Driver"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD: "lportal"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME: "lportal"
+      LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL: "jdbc:mysql://mysql/lifebank73?characterEncoding=UTF-8&dontTrackOpenResources=true&holdResultsOpenOverStatementClose=true&useFastDateParsing=false&useUnicode=true"
+      LIFERAY_MAIL_PERIOD_SESSION_PERIOD_MAIL_PERIOD_SMTP_PERIOD_AUTH: "false"
+      LIFERAY_MAIL_PERIOD_SESSION_PERIOD_MAIL_PERIOD_SMTP_PERIOD_HOST: "mail"
+      LIFERAY_MAIL_PERIOD_SESSION_PERIOD_MAIL_PERIOD_SMTP_PERIOD_PASSWORD: ""
+      LIFERAY_MAIL_PERIOD_SESSION_PERIOD_MAIL_PERIOD_SMTP_PERIOD_PORT: "25"
+      LIFERAY_MAIL_PERIOD_SESSION_PERIOD_MAIL_PERIOD_SMTP_PERIOD_STARTTLS_PERIOD_ENABLE: "false"
+      LIFERAY_MAIL_PERIOD_SESSION_PERIOD_MAIL_PERIOD_SMTP_PERIOD_USER: ""
+    networks:
+      network:
+        ipv4_address: 172.16.238.40
+    ports:
+      - "8080:8080"
+      - "11311:11311"
+    volumes:
+      - ./liferay/base:/mnt/liferay
+      - ./liferay/data:/opt/liferay/data
+volumes:
+  mysql-data:
+  smtp_data:
+  
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"

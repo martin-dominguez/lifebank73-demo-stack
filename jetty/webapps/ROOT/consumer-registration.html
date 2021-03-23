@@ -1,0 +1,144 @@
+<!--
+Open Bank Project - API
+Copyright (C) 2011-2017, TESOBE Ltd
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Email: contact@tesobe.com
+TESOBE Ltd
+Osloerstrasse 16/17
+Berlin 13359, Germany
+
+  This product includes software developed at
+  TESOBE (http://www.tesobe.com/)
+  by
+  Simon Redfern : simon AT tesobe DOT com
+  Sebastian Henschel : sebastian AT tesobe DOT com
+-->
+<div id="register-consumer" data-lift="surround?with=default;at=content">
+	<div data-lift="ConsumerRegistration.registerForm">
+		<h1>Register your consumer</h1>
+
+		<div id="register-consumer-input">
+			<div id="register-consumer-explanation">Please complete the information about your application below, so we can create your OAuth consumer key and secret.</div>
+
+			<div id="register-consumer-errors" class="alert alert-danger">
+				<div class="error">
+					<span class="errorContent"></span>
+				</div>
+			</div>
+
+			<form method="post">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label for="appType">Application Type</label>
+							<select name="app-type" id="appType" class="form-control">
+								<option class="app-type-option"></option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="appName">Application Name</label>
+							<input type="text" name="app-name" id="appName" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="appRedirectUrl">Redirect URL</label>
+							<input type="text" name="app-redirect-url" id="appRedirectUrl" class="form-control">
+						</div>
+						<!--Note for the commented div : 719aa7fd 04/10/15 Stefan. Hongwei just reformatted the code -->
+						 <!--<div class="form-group">-->
+						<!--<label for="appUserAuthenticationUrl">Authentication URL</label>-->
+						<!--<input type="text" name="app-user-authentication-url" id="appUserAuthenticationUrl" class="form-control" >-->
+						<!--<img src="/media/images/moreInfo.png" title="The user will redirected to that URL during the authentication phase to authenticate. Leave it blank so that the user will see the default login page." alt="more info" class="more-info-icon"/>-->
+						<!--</div>-->
+						<div class="form-group">
+							<label for="appDev">Developer Email</label>
+							<input type="text" name="app-developer" id="appDev" class="form-control">
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div class="form-group">
+							<label for="appDesc">Description of the application</label>
+							<textarea rows="4" name="app-description" id="appDesc" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+				<input type="submit" value="Register consumer" class="btn btn-default" />
+			</form>
+		</div>
+
+		<div id="register-consumer-success">
+			<p>Thanks for registering your consumer with the Open Bank API! Here is your developer information. Please save it in a secure location.</p>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Consumer ID</div>
+				<div class="col-xs-12 col-sm-8"><span id="app-consumer_id">123</span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Application Type</div>
+				<div class="col-xs-12 col-sm-8"><span id="app-type">web</span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Application Name</div>
+				<div class="col-xs-12 col-sm-8"><span id="app-name">ABC</span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">User redirect URL</div>
+				<div class="col-xs-12 col-sm-8"><span id="app-redirect-url">ABC</span></div>
+			</div>
+			<!--
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">User authentication URL</div>
+				<div class="col-xs-12 col-sm-8"><span id="app-user-authentication-url">ABC</span></div>
+			</div>
+			-->
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Developer Email</div>
+				<div class="col-xs-12 col-sm-8"><span id="app-developer">abc@example.com</span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">App Description</div>
+				<div class="col-xs-12 col-sm-8"><span id="app-description">ABCDEF</span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Consumer Key</div>
+				<div class="col-xs-12 col-sm-8"><span id="auth-key">23432432432432</span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Consumer Secret</div>
+				<div class="col-xs-12 col-sm-8"><span id="secret-key">3334543543543</span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">OAuth Endpoint</div>
+				<div class="col-xs-12 col-sm-8"><span id="oauth-endpoint"><a href="#">endpoint</a></span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">OAuth Documentation</div>
+				<div class="col-xs-12 col-sm-8"><a href="https://github.com/OpenBankProject/OBP-API/wiki/OAuth-1.0-Server">How to use OAuth for OpenBankProject</a></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Direct Login Endpoint</div>
+				<div class="col-xs-12 col-sm-8"><span id="directlogin-endpoint"><a href="#">endpoint</a></span></div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">Direct Login Documentation</div>
+				<div class="col-xs-12 col-sm-8"><a href="https://github.com/OpenBankProject/OBP-API/wiki/Direct-Login">How to use Direct Login</a>
+</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4"></div>
+				<div class="col-xs-12 col-sm-8"><span id="post-consumer-registration-more-info-link"><a href="#"></a></span></div>
+			</div>
+		</div><!-- success -->
+	</div>
+</div>

@@ -1,0 +1,32 @@
+<div id="authorise">
+	<div class="login-error"><span data-lift="Msg?id=login&errorClass=error"/></div>
+	<div data-lift="Login.customiseLogin">
+		<h1>Please login with your username</h1>
+		<div id="login-special-instructions">Special Instructions</div>
+
+		<form class="login" action="/user_mgt/login" method="post">
+			<div data-lift="Login.openIdConnectScripts" id="openid_scripts"></div>
+			<div class="form-group">
+				<input class="form-control" id="username" type="text" placeholder="Username" name="username" tabindex="1" autofocus autocomplete="off"/>
+			</div>
+			<div class="form-group">
+				<input class="form-control" id="password" type="password" placeholder="Password"  name="password" tabindex="2" autocomplete="off"/>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div id="authorise-submit" class="authorise-button" tabindex="3">
+						<!-- Would be nice to have proper HTML here -->
+						<user:submit />
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<a href="/user_mgt/sign_up" id="authorise-signup" class="btn btn-default pull-right authorise-button" tabindex="4">Sign up</a>
+				</div>
+			</div>
+			<a href="/user_mgt/lost_password" id="authorise-recover-password" tabindex="5">Recover password</a>
+		</form>
+		<div data-lift="Login.openIdConnectButton">
+			<div id="openid_button"></div>
+		</div>
+	</div>
+</div>

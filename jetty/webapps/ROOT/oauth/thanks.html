@@ -1,0 +1,17 @@
+<div id="authorise" data-lift="surround?with=default;at=content">
+	<div data-lift="OAuthWorkedThanks.thanks" id="oauth-done-thanks">
+		<h1>You have been authenticated!</h1>
+
+		<div id="manual-redirect">
+			Please click <a id="redirect-link" href="">here</a> to be redirected.</noscript>
+		</div>
+		<p>
+		The requesting application should have received an ok and you may now close this window.
+		</p>
+
+		<script class="redirect-script" type="text/javascript">
+			$('#manualRedirect').hide(); //don't need the manual link if js is enabled
+			window.location.assign($('#redirect-link').attr('href'));
+		</script>
+	</div>
+</div>
