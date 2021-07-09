@@ -38,8 +38,10 @@ services:
     entrypoint: /usr/local/bin/wait-for -t 60 mysql:3306 -- /docker-entrypoint.sh
     networks:
       - "network"
+    environment:
+      JAVA_OPTIONS: "-Djetty.port=8081"
     ports:
-      - "8081:8080"
+      - "8081:8081"
     volumes:
       - ./jetty/webapps:/var/lib/jetty/webapps
   liferay:
